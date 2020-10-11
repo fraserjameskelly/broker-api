@@ -11,6 +11,9 @@ const bodyParser = require("body-parser");
 const app = express_1.default();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/', () => {
+    console.log('App started');
+});
 app.use('/insurer', insurer_1.default);
 app.use('/policy', policy_1.default);
 app.use('/policy-type', policyType_1.default);

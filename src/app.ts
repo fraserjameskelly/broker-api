@@ -11,6 +11,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //routing
+app.use('/', () => {
+    console.log('App started');
+})
 app.use('/insurer', insurerRouter);
 app.use('/policy', policyRouter);
 app.use('/policy-type', policyTypeRouter);
