@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 const app = express_1.default();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/', (_req, res) => {
+app.get('/', (_req, res) => {
     console.log('App started');
     res.send('OK');
 });
