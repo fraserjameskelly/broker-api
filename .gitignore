@@ -6,3 +6,4 @@
 
 #passwords
 passwords.txt
+./node_modules/*
