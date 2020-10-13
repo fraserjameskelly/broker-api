@@ -66,12 +66,14 @@ exports.update = (req, res) => {
 exports.remove = (req, res) => {
     Connection_1.connection
         .then((connection) => __awaiter(void 0, void 0, void 0, function* () {
-        let policyType = yield connection.manager.findOne(PolicyType_1.default, req.params.id);
+        let policyType = yield connection.manager.findOne(PolicyType_1.default, req.params.id, { relations: ['policies'] });
         if (typeof policyType !== 'undefined') {
-            policyType.policies.forEach((policy) => __awaiter(void 0, void 0, void 0, function* () {
-                yield connection.manager.remove(Policy_1.default, policy);
-            }));
-            yield connection.manager.remove(PolicyType_1.default, req.params.id);
+            if (typeof policyType.policies !== 'undefined') {
+                policyType.policies.forEach((policy) => __awaiter(void 0, void 0, void 0, function* () {
+                    yield connection.manager.remove(Policy_1.default, policy);
+                }));
+            }
+            yield connection.manager.remove(PolicyType_1.default, policyType);
             res.json({ message: 'Successfully Removed.' });
         }
         else {

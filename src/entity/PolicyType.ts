@@ -11,7 +11,7 @@ export class PolicyType {
    name: string;
 
    @OneToMany(_type => Policy, policy => policy.policyType) 
-   policies: Policy[];  
+   policies: Policy[];
 }
 
 export default PolicyType;

@@ -66,12 +66,14 @@ exports.update = (req, res) => {
 exports.remove = (req, res) => {
     Connection_1.connection
         .then((connection) => __awaiter(void 0, void 0, void 0, function* () {
-        let insurer = yield connection.manager.findOne(Insurer_1.default, req.params.id);
+        let insurer = yield connection.manager.findOne(Insurer_1.default, req.params.id, { relations: ['policies'] });
         if (typeof insurer !== 'undefined') {
-            insurer.policies.forEach((policy) => __awaiter(void 0, void 0, void 0, function* () {
-                yield connection.manager.remove(Policy_1.default, policy);
-            }));
-            yield connection.manager.remove(Insurer_1.default, req.params.id);
+            if (typeof insurer.policies !== 'undefined') {
+                insurer.policies.forEach((policy) => __awaiter(void 0, void 0, void 0, function* () {
+                    yield connection.manager.remove(Policy_1.default, policy);
+                }));
+            }
+            yield connection.manager.remove(Insurer_1.default, insurer);
             res.json({ message: 'Successfully Removed.' });
         }
         else {

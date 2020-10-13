@@ -9,8 +9,10 @@ const policy_1 = __importDefault(require("./routes/policy"));
 const policyType_1 = __importDefault(require("./routes/policyType"));
 const bodyParser = require("body-parser");
 const app = express_1.default();
+const cors = require('cors');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 app.get('/', (_req, res) => {
     console.log('App started');
     res.send('OK');

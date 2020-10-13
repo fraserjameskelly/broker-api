@@ -5,7 +5,7 @@ import { connection } from '../connection/Connection';
 
 export const list = (_req, res) => {
     connection.then(async connection => {
-        const policies: Policy[] = await connection.manager.find(Policy);
+        const policies: Policy[] = await connection.manager.find(Policy, { relations: ['insurer', 'policyType'] });
         res.json(policies);
     });
 };
@@ -15,8 +15,10 @@ export const details = (req, res) => {
         .then(async connection => {
             let policy = await connection.manager.findOne(
                 Policy,
-                req.params.id
+                req.params.id,
+                { relations: ['insurer', 'policyType'] }
             );
+
             res.json(policy);
         })
         .catch(error => {
@@ -118,7 +120,7 @@ export const remove = (req, res) => {
             );
 
             if (typeof policy !== 'undefined') {
-                await connection.manager.remove(Policy, req.params.id);
+                await connection.manager.remove(Policy, policy);
                 res.json({ message: 'Successfully Removed.' });
             } else {
                 res.json({

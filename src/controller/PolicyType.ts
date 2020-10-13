@@ -4,7 +4,9 @@ import PolicyType from '../entity/PolicyType';
 
 export const list = (_req, res) => {
     connection.then(async connection => {
-        const policies: PolicyType[] = await connection.manager.find(PolicyType);
+        const policies: PolicyType[] = await connection.manager.find(
+            PolicyType
+        );
         res.json(policies);
     });
 };
@@ -69,15 +71,18 @@ export const remove = (req, res) => {
         .then(async connection => {
             let policyType = await connection.manager.findOne(
                 PolicyType,
-                req.params.id
+                req.params.id,
+                { relations: ['policies'] }
             );
 
             if (typeof policyType !== 'undefined') {
-                policyType.policies.forEach(async policy => {
-                    await connection.manager.remove(Policy, policy);
-                });
+                if (typeof policyType.policies !== 'undefined') {
+                    policyType.policies.forEach(async policy => {
+                        await connection.manager.remove(Policy, policy);
+                    });
+                }
 
-                await connection.manager.remove(PolicyType, req.params.id);
+                await connection.manager.remove(PolicyType, policyType);
                 res.json({ message: 'Successfully Removed.' });
             } else {
                 res.json({

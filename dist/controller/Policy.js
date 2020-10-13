@@ -19,14 +19,14 @@ const PolicyType_1 = __importDefault(require("../entity/PolicyType"));
 const Connection_1 = require("../connection/Connection");
 exports.list = (_req, res) => {
     Connection_1.connection.then((connection) => __awaiter(void 0, void 0, void 0, function* () {
-        const policies = yield connection.manager.find(Policy_1.default);
+        const policies = yield connection.manager.find(Policy_1.default, { relations: ['insurer', 'policyType'] });
         res.json(policies);
     }));
 };
 exports.details = (req, res) => {
     Connection_1.connection
         .then((connection) => __awaiter(void 0, void 0, void 0, function* () {
-        let policy = yield connection.manager.findOne(Policy_1.default, req.params.id);
+        let policy = yield connection.manager.findOne(Policy_1.default, req.params.id, { relations: ['insurer', 'policyType'] });
         res.json(policy);
     }))
         .catch(error => {
@@ -93,7 +93,7 @@ exports.remove = (req, res) => {
         .then((connection) => __awaiter(void 0, void 0, void 0, function* () {
         let policy = yield connection.manager.findOne(Policy_1.default, req.params.id);
         if (typeof policy !== 'undefined') {
-            yield connection.manager.remove(Policy_1.default, req.params.id);
+            yield connection.manager.remove(Policy_1.default, policy);
             res.json({ message: 'Successfully Removed.' });
         }
         else {

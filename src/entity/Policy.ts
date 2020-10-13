@@ -16,11 +16,11 @@ export class Policy {
     @Column("double")
     premium: number;
 
-    @ManyToOne(_type => PolicyType, policyType => policyType.policies, {eager: true})
+    @ManyToOne(_type => PolicyType, policyType => policyType.policies)
     @JoinColumn()
     policyType: PolicyType;
 
-    @ManyToOne(_type => Insurer, insurer => insurer.policies, {eager: true})
+    @ManyToOne(_type => Insurer, insurer => insurer.policies)
     @JoinColumn()
     insurer: Insurer;
 }

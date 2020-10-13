@@ -69,15 +69,18 @@ export const remove = (req, res) => {
         .then(async connection => {
             let insurer = await connection.manager.findOne(
                 Insurer,
-                req.params.id
+                req.params.id,
+                { relations: ['policies'] }
             );
 
             if (typeof insurer !== 'undefined') {
-                insurer.policies.forEach(async policy => {
-                    await connection.manager.remove(Policy, policy);
-                });
+                if (typeof insurer.policies !== 'undefined') {
+                    insurer.policies.forEach(async policy => {
+                        await connection.manager.remove(Policy, policy);
+                    });
+                }
 
-                await connection.manager.remove(Insurer, req.params.id);
+                await connection.manager.remove(Insurer, insurer);
                 res.json({ message: 'Successfully Removed.' });
             } else {
                 res.json({

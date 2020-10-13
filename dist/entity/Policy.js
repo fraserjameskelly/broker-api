@@ -32,12 +32,12 @@ __decorate([
     __metadata("design:type", Number)
 ], Policy.prototype, "premium", void 0);
 __decorate([
-    typeorm_1.ManyToOne(_type => PolicyType_1.PolicyType, policyType => policyType.policies, { eager: true }),
+    typeorm_1.ManyToOne(_type => PolicyType_1.PolicyType, policyType => policyType.policies),
     typeorm_1.JoinColumn(),
     __metadata("design:type", PolicyType_1.PolicyType)
 ], Policy.prototype, "policyType", void 0);
 __decorate([
-    typeorm_1.ManyToOne(_type => Insurer_1.Insurer, insurer => insurer.policies, { eager: true }),
+    typeorm_1.ManyToOne(_type => Insurer_1.Insurer, insurer => insurer.policies),
     typeorm_1.JoinColumn(),
     __metadata("design:type", Insurer_1.Insurer)
 ], Policy.prototype, "insurer", void 0);
